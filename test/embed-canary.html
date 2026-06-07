@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ATR iframe canary</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+      background: #fff;
+    }
+    main {
+      width: min(1280px, 100%);
+      margin: 0 auto;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      min-height: 1200px;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <iframe
+      id="strategy-chart"
+      title="Average True Range 波幅擴張策略互動回測"
+      src="../average-true-range/"
+      loading="eager"
+      scrolling="no"
+    ></iframe>
+  </main>
+  <script>
+    const iframe = document.getElementById("strategy-chart");
+    const expectedOrigin = window.location.origin;
+
+    window.addEventListener("message", (event) => {
+      if (event.origin !== expectedOrigin || event.source !== iframe.contentWindow) return;
+      if (!event.data || event.data.type !== "strategy-interactive-height") return;
+      const requested = Number(event.data.height);
+      if (!Number.isFinite(requested)) return;
+      const bounded = Math.min(Math.max(Math.ceil(requested), 1200), 12000);
+      iframe.style.height = `${bounded}px`;
+      iframe.dataset.reportedHeight = String(bounded);
+    });
+  </script>
+</body>
+</html>
