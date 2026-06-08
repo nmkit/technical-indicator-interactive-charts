@@ -28,7 +28,9 @@
       background: var(--paper);
     }
     .slice-shell {
-      width: 100%;
+      width: 80%;
+      max-width: 1280px;
+      margin: 0 auto;
       padding: 0 0 24px;
     }
     .slice-header {
@@ -289,6 +291,7 @@
       background: var(--surface);
     }
     @media (max-width: 820px) {
+      .slice-shell { width: 100%; }
       .slice-header { grid-template-columns: 1fr; }
       .controls { justify-content: flex-start; }
       .period-panel-header { display: block; }
